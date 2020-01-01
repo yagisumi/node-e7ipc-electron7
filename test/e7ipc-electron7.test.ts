@@ -39,8 +39,8 @@ const handler: Handler<Request, Response> = async (_, req) => {
 describe('Client, Server', () => {
   test('normal request', async () => {
     const mock = new Mock()
-    const client = createClient<Request, Response>(mock as any, 'test')
-    const server = createServer<Request, Response>(mock as any, 'test')
+    const client = createClient<Request, Response>('test', mock as any)
+    const server = createServer<Request, Response>('test', mock as any)
 
     server.handle(handler)
 
@@ -56,8 +56,8 @@ describe('Client, Server', () => {
 
   test('handle, removeHandler, handleOnce', async () => {
     const mock = new Mock()
-    const client = createClient<Request, Response>(mock as any, 'test')
-    const server = createServer<Request, Response>(mock as any, 'test')
+    const client = createClient<Request, Response>('test', mock as any)
+    const server = createServer<Request, Response>('test', mock as any)
 
     const r1 = await client.invoke({ type: 'hello' }).catch((err) => {
       expect(err).toBeInstanceOf(Error)
