@@ -4,9 +4,9 @@ import { IpcMain, IpcRenderer } from 'electron'
 
 class IpcRendererClient<Req, Res> implements Client<Req, Res> {
   private channel: string
-  private ipcRenderer: Electron.IpcRenderer
+  private ipcRenderer: IpcRenderer
 
-  constructor(channel: string, ipcRenderer: Electron.IpcRenderer) {
+  constructor(channel: string, ipcRenderer: IpcRenderer) {
     this.ipcRenderer = ipcRenderer
     this.channel = channel
   }
@@ -18,8 +18,8 @@ class IpcRendererClient<Req, Res> implements Client<Req, Res> {
 
 class IpcMainServer<Req, Res> implements Server<Req, Res> {
   private channel: string
-  private ipcMain: Electron.IpcMain
-  constructor(channel: string, ipcMain: Electron.IpcMain) {
+  private ipcMain: IpcMain
+  constructor(channel: string, ipcMain: IpcMain) {
     this.ipcMain = ipcMain
     this.channel = channel
   }
@@ -40,10 +40,10 @@ class IpcMainServer<Req, Res> implements Server<Req, Res> {
   }
 }
 
-export function createClient<Req, Res>(channel: string, ipcRenderer: Electron.IpcRenderer) {
+export function createClient<Req, Res>(channel: string, ipcRenderer: IpcRenderer) {
   return new IpcRendererClient<Req, Res>(channel, ipcRenderer)
 }
 
-export function createServer<Req, Res>(channel: string, ipcMain: Electron.IpcMain) {
+export function createServer<Req, Res>(channel: string, ipcMain: IpcMain) {
   return new IpcMainServer<Req, Res>(channel, ipcMain)
 }
