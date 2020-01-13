@@ -1,9 +1,9 @@
 # @yagisumi/e7ipc-electron7
 
-Welcome
+Electron IPC wrapper using `invoke` and `handle`.
 
 [![NPM version][npm-image]][npm-url] [![install size][packagephobia-image]][packagephobia-url] [![DefinitelyTyped][dts-image]][dts-url]  
-[![Build Status][travis-image]][travis-url] [![Build Status][appveyor-image]][appveyor-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+[![Build Status][githubactions-image]][githubactions-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 
 ## Installation
 
@@ -11,40 +11,102 @@ Welcome
 $ npm i @yagisumi/e7ipc-electron7
 ```
 
+## Requirements
+
+[@yagisumi/e7ipc-electron7](https://www.npmjs.com/package/@yagisumi/e7ipc-electron7) ― `electron` v7 or higher<br>
+[@yagisumi/e7ipc-electron](https://www.npmjs.com/package/@yagisumi/e7ipc-electron) ― `electron` v4 or higher
+
 ## Usage
 
-- javascript
+```ts
+// messages.ts
+export const CHANNEL = 'app'
 
-```js
-const XXXXXXXXX = require('@yagisumi/e7ipc-electron7').e7ipc-electron7;
+type MapType<T, U = keyof T> = U extends keyof T ? T[U] : never
 
-XXXXXXXXX();
+export interface Requests {
+  hello: {
+    type: 'hello'
+  }
+  bye: {
+    type: 'bye'
+  }
+}
+
+export type Request = MapType<Requests>
+
+export interface Responses {
+  ok: {
+    type: 'ok'
+  }
+  error: {
+    type: 'error'
+    message: string
+  }
+}
+
+export type Response = MapType<Responses>
+
+export const unexpected = (): Response => {
+  return { type: 'error', message: 'unexpected' }
+}
 ```
-
-- typescript
 
 ```ts
-import { @yagisumi/e7ipc-electron7 } from '@yagisumi/e7ipc-electron7';
+// handler.ts
+import { Handler } from '@yagisumi/e7ipc-electron7'
+import { Request, Response } from './messages.ts'
 
-XXXXXXXXX();
+export const handler: Handler<Request, Response> = async (_, req) => {
+  if (req.type === 'hello') {
+    return { type: 'ok' }
+  } else if (req.type === 'bye') {
+    return { type: 'error', message: `Don't say goodbye.` }
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const unreachable: never = req
+    throw 'unreachable'
+  }
+}
 ```
 
-## Documentation
+```ts
+// process: Main
+import { ipcMain } from 'electron'
+import { Request, Response, CHANNEL } from './messages'
+import { handler } from './handler'
+import { createServer } from '@yagisumi/e7ipc-electron7'
 
-https://yagisumi.github.io/node-e7ipc-electron7/
+const server = createServer<Request, Response>(CHANNEL, ipcMain)
+server.handle(handler)
+```
+
+```ts
+// Process: Renderer
+import { ipcRenderer } from 'electron'
+import { Request, Response, CHANNEL, unexpected } from './messages'
+import { createClient } from '@yagisumi/e7ipc-electron7'
+
+const client = createClient<Request, Response>(CHANNEL, ipcRenderer)
+
+async function foo() {
+  const r1 = await client.invoke({ type: 'hello' }).catch(unexpected)
+  // r1: { type: 'ok' }
+  const r2 = await client.invoke({ type: 'bye' }).catch(unexpected)
+  // r2: { type: 'error', message: `Don't say goodbye.` }
+}
+```
 
 ## License
 
 [MIT License](https://opensource.org/licenses/MIT)
 
+[githubactions-image]: https://img.shields.io/github/workflow/status/yagisumi/node-e7ipc-electron7/build?logo=github&style=flat-square
+[githubactions-url]: https://github.com/yagisumi/node-e7ipc-electron7/actions
 [npm-image]: https://img.shields.io/npm/v/@yagisumi/e7ipc-electron7.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/@yagisumi/e7ipc-electron7
 [packagephobia-image]: https://flat.badgen.net/packagephobia/install/@yagisumi/e7ipc-electron7
 [packagephobia-url]: https://packagephobia.now.sh/result?p=@yagisumi/e7ipc-electron7
-[travis-image]: https://img.shields.io/travis/yagisumi/node-e7ipc-electron7.svg?style=flat-square
-[travis-url]: https://travis-ci.org/yagisumi/node-e7ipc-electron7
-[appveyor-image]: https://img.shields.io/appveyor/ci/yagisumi/node-e7ipc-electron7.svg?logo=appveyor&style=flat-square
-[appveyor-url]: https://ci.appveyor.com/project/yagisumi/node-e7ipc-electron7
 [coveralls-image]: https://img.shields.io/coveralls/yagisumi/node-e7ipc-electron7.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/github/yagisumi/node-e7ipc-electron7?branch=master
 [dts-image]: https://img.shields.io/badge/DefinitelyTyped-.d.ts-blue.svg?style=flat-square
