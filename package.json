@@ -1,10 +1,10 @@
 {
   "name": "@yagisumi/e7ipc-electron7",
   "version": "0.1.0",
-  "description": "",
+  "description": "Electron IPC wrapper using `invoke` and `handle`.",
   "keywords": [],
   "engines": {
-    "node": ">= 6.0.0"
+    "node": ">= 8.0.0"
   },
   "private": true,
   "main": "lib/e7ipc-electron7",
