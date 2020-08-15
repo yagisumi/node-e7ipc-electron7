@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
-type Handler = (ev: {}, ...args: any[]) => any
+type Handler = (ev: unknown, ...args: any[]) => any
 
 export class Mock {
   private handlers = new Map<string, Handler>()
