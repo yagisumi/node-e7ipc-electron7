@@ -1,8 +1,9 @@
 # @yagisumi/e7ipc-electron7
 
-Electron IPC wrapper using `invoke` and `handle`.
+Electron IPC wrapper using `invoke` and `handle`.  
+A new library exists: [@yagisumi/e7ipc2-electron](https://github.com/yagisumi/node-e7ipc2-electron)
 
-[![NPM version][npm-image]][npm-url] [![install size][packagephobia-image]][packagephobia-url] [![DefinitelyTyped][dts-image]][dts-url]  
+[![NPM version][npm-image]][npm-url] [![install size][packagephobia-image]][packagephobia-url] [![TypeScript][typescript-image]][typescript-url]  
 [![Build Status][githubactions-image]][githubactions-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 
 ## Installation
@@ -132,5 +133,5 @@ describe('handler', () => {
 [packagephobia-url]: https://packagephobia.now.sh/result?p=@yagisumi/e7ipc-electron7
 [coveralls-image]: https://img.shields.io/coveralls/yagisumi/node-e7ipc-electron7.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/github/yagisumi/node-e7ipc-electron7?branch=master
-[dts-image]: https://img.shields.io/badge/DefinitelyTyped-.d.ts-blue.svg?style=flat-square
-[dts-url]: http://definitelytyped.org
+[typescript-image]: https://img.shields.io/badge/TypeScript-.d.ts-555?logo=typescript&labelColor=007ACC&style=flat-square
+[typescript-url]: https://www.typescriptlang.org/
