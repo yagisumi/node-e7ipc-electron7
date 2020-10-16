@@ -1,7 +1,7 @@
 # @yagisumi/e7ipc-electron7
 
 Electron IPC wrapper using `invoke` and `handle`.  
-A new library exists: [@yagisumi/e7ipc2-electron](https://github.com/yagisumi/node-e7ipc2-electron)
+A new library exists: [@yagisumi/e7ipc2-electron](https://www.npmjs.com/package/@yagisumi/e7ipc2-electron)
 
 [![NPM version][npm-image]][npm-url] [![install size][packagephobia-image]][packagephobia-url] [![TypeScript][typescript-image]][typescript-url]  
 [![Build Status][githubactions-image]][githubactions-url] [![Coverage percentage][coveralls-image]][coveralls-url]
